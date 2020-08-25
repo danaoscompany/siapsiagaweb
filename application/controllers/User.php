@@ -116,6 +116,17 @@ class User extends CI_Controller
 	        ));
         }
     }
+    
+    public function check_email_exists() {
+    	$email = $this->input->post('email');
+    	$this->db->where('email', $email);
+    	$users = $this->db->get('users')->result_array();
+    	if (sizeof($users) > 0) {
+    		echo 1;
+    	} else {
+    		echo -1;
+    	}
+    }
 
     public function set_alarm()
     {
