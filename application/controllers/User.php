@@ -347,7 +347,7 @@ class User extends CI_Controller
         ))->row_array() ['receive_alerts']);
         if ($receiveAlerts != 2)
         {
-            FCM::send_message($receiverToken, 1, $showNotification, 'Pesan baru', "Anda mendapat pemberitahuan dari komandan " . $commanderName, array(
+            FCM::send_message($receiverToken, 1, $showNotification, 'Pesan baru', "Anda mendapat pesan baru", array(
                 'alarm_on' => $on,
             	'alarm_type' => $alarmType,
             	'receive_alerts' => $receiveAlerts

@@ -10,20 +10,19 @@ class Main extends CI_Controller {
   
   public function check_email() {
   	$email = $this->input->post('email');
-  	$users = $this->db->query('SELECT * FROM `users`')->result_array();
-  	for ($i=0; $i<sizeof($users); $i++) {
-  		if ($users[$i]['email'] == $email) {
-  			echo json_encode(array(
-  				'response_code' => 1,
-  				'user_id' => intval($users[$i]['id']),
-  				'role' => intval($users[$i]['role'])
-  			));
-  			return;
-  		}
+  	$users = $this->db->query("SELECT * FROM `users` WHERE `email`='" . $email . "'")->result_array();
+  	if (sizeof($users) > 0) {
+  		$user = $users[0];
+  		echo json_encode(array(
+  			'response_code' => 1,
+  			'user_id' => intval($user['id']),
+  			'role' => intval($user['role'])
+  		));
+  	} else {
+  		echo json_encode(array(
+  			'response_code' => 0
+  		));
   	}
-  	echo json_encode(array(
-  		'response_code' => 0
-  	));
   }
   
   public function query() {
