@@ -1,5 +1,6 @@
 <?php
 require ('fcm.php');
+require ('Util.php');
 
 class User extends CI_Controller
 {
@@ -139,6 +140,7 @@ class User extends CI_Controller
         $on = intval($this
             ->input
             ->post('on'));
+        $color = $this->input->post('color');
         $commanderName = $this
             ->db
             ->get_where('users', array(
@@ -174,13 +176,93 @@ class User extends CI_Controller
             $receiveAlerts = intval($user['receive_alerts']);
             if ($receiveAlerts != 2)
             {
-                FCM::send_message($fcmToken, 1, $showNotification, 'Pesan baru', "Sedang ada pelaksanaan alarm dari komandan " . $commanderName, array(
+                FCM::send_message($fcmToken, 1, $showNotification, 'Pesan baru', "Sedang ada pelaksanaan alarm dari komandan " . $commanderName,
+                	array(
+                	    'alarm_on' => $on,
+                	    'alarm_type' => $alarmType,
+                	    'receive_alerts' => $receiveAlerts,
+                	    'commander_id' => $commanderID,
+                	    'color' => $color
+                	)
+                );
+            }
+        }
+    }
+
+    public function set_alarm_with_image()
+    {
+    	$config['upload_path']          = './userdata/';
+        $config['allowed_types']        = '*';
+        $config['max_size']             = 2147483647;
+        $config['file_name']            = Util::generateUUIDv4();
+        $this->load->library('upload', $config);
+        if (!$this->upload->do_upload('file')) {
+        	return;
+        }
+        $imgFileName = $this->upload->data()['file_name'];
+        $commanderID = intval($this
+            ->input
+            ->post('commander_id'));
+        $alarmType = intval($this
+            ->input
+            ->post('alarm_type'));
+        $on = intval($this
+            ->input
+            ->post('on'));
+        $color = $this->input->post('color');
+        $commanderName = $this
+            ->db
+            ->get_where('users', array(
+            'id' => $commanderID
+        ))->row_array() ['name'];
+        $users = $this
+            ->db
+            ->get_where('subscribed_commanders', array(
+            'commander_id' => $commanderID
+        ))->result_array();
+        $title = "";
+        $clickAction = "";
+        $showNotification = 0;
+        if ($on == 0)
+        {
+            $title = "Alarm mati";
+            $clickAction = "alertoff";
+        }
+        else if ($on == 1)
+        {
+            $title = "Alarm menyala";
+            $clickAction = "alerton";
+            $showNotification = 1;
+        }
+        for ($i = 0;$i < sizeof($users);$i++)
+        {
+            $user = $users[$i];
+            $fcmToken = $this
+                ->db
+                ->get_where('users', array(
+                'id' => intval($user['soldier_id'])
+            ))->row_array()['fcm_id'];
+            $receiveAlerts = intval($user['receive_alerts']);
+            if ($receiveAlerts != 2)
+            {
+                FCM::send_message_without_notification($fcmToken, 5, array(
                     'alarm_on' => $on,
                     'alarm_type' => $alarmType,
-                    'receive_alerts' => $receiveAlerts
+                    'receive_alerts' => $receiveAlerts,
+                    'commander_id' => $commanderID,
+                    'color' => $color,
+                    'img_url' => base_url() . "userdata/" . $imgFileName
                 ));
             }
         }
+        /*$fcmToken = $this->db->query("SELECT * FROM `users` WHERE `email`='danaoscompany@gmail.com'")->row_array()['fcm_id'];
+        FCM::send_message_without_notification($fcmToken, 5, array(
+                    'alarm_on' => $on,
+                    'alarm_type' => $alarmType,
+                    'receive_alerts' => 1,
+                    'img_url' => base_url() . "userdata/" . $imgFileName,
+                    'color' => $this->input->post('color')
+                ));*/
     }
 
     public function get_private_messages()

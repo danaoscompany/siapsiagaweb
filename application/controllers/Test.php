@@ -10,4 +10,8 @@ class Test extends CI_Controller {
 			'receive_alerts' => 1
 		));
 	}
+	
+	public function a() {
+		echo base_url();
+	}
 }
