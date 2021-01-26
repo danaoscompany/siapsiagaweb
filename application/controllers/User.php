@@ -767,27 +767,22 @@ FROM videos HAVING distance < 25 ORDER BY distance;')->result_array();
             ->db
             ->get('users')
             ->result_array();
-
-        /*for ($i=0; $i<sizeof($users); $i++) {
-        $user = $users[$i];
-        if (intval($user['id']) == $senderID) {
-        continue;
-        }
-        PushyAPI::send_message($user['pushy_token'], 3, 1, 'Pesan baru', $shortMessage, array(
-        'message_id' => "" . $lastID
-        ));
-        }*/
-        $row = $this
+		$message = $this
             ->db
             ->get_where('messages', array(
             'id' => $lastID
         ))->row_array();
-        $row['name'] = $this
+        $message['name'] = $this
             ->db
             ->get_where('users', array(
             'id' => $senderID
         ))->row_array() ['name'];
-        echo json_encode($row);
+        FCM::send_message_without_notification('/topics/chat', 4, array(
+        	'message_id' => "" . $lastID,
+        	'message' => json_encode($message)
+        ));
+        
+        echo json_encode($message);
     }
 
     public function get_messages()
