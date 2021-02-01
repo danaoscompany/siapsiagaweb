@@ -4,7 +4,7 @@ class FCM extends CI_Controller {
 
 	static public function sendPushNotification($title, $body, $data, $token) {
 	    $url = "https://fcm.googleapis.com/fcm/send";
-	    $serverKey = 'AAAANAqFItM:APA91bHewHKRDRZpIeHnpAKMsoltCSxRuTftYweqzkKyIBkl-XVXHX6DRCSC5ju93JASPLhBHokxONsxTiwTTEM1hTbyCfcXCnhvqtSRET4xJugKvjXcXFphlKEHsUcXX3OkveVu3d9m';
+	    $serverKey = 'AAAAvB1532o:APA91bG6nIch54bG8iwHxWGu0QmNru3piqFqu5n3M_pKXofcuXW2NhMos4a9p8JtO_5WisBJLIYvE5007HoKrs0u-UctvoLkYAppchSUefuVENEl5Vnx6mx70ZQVTJ1MiWWG3EHmH73l';
 	    $notification = array('title' => $title, 'body' => $body, 'sound' => 'default', 'badge' => '1');
 	    $arrayToSend = array('to' => $token, 'notification' => $notification, 'priority'=>'high', 'data' => $data);
 	    $json = json_encode($arrayToSend);
@@ -34,7 +34,7 @@ class FCM extends CI_Controller {
 
 	static public function sendPushNotificationWithColor($title, $body, $color, $data, $token) {
 	    $url = "https://fcm.googleapis.com/fcm/send";
-	    $serverKey = 'AAAANAqFItM:APA91bHewHKRDRZpIeHnpAKMsoltCSxRuTftYweqzkKyIBkl-XVXHX6DRCSC5ju93JASPLhBHokxONsxTiwTTEM1hTbyCfcXCnhvqtSRET4xJugKvjXcXFphlKEHsUcXX3OkveVu3d9m';
+	    $serverKey = 'AAAAvB1532o:APA91bG6nIch54bG8iwHxWGu0QmNru3piqFqu5n3M_pKXofcuXW2NhMos4a9p8JtO_5WisBJLIYvE5007HoKrs0u-UctvoLkYAppchSUefuVENEl5Vnx6mx70ZQVTJ1MiWWG3EHmH73l';
 	    $notification = array('title' => $title, 'body' => $body, 'color' => $color, 'sound' => 'default', 'badge' => '1');
 	    $arrayToSend = array('to' => $token, 'notification' => $notification, 'priority'=>'high', 'data' => $data);
 	    $json = json_encode($arrayToSend);
@@ -64,7 +64,7 @@ class FCM extends CI_Controller {
 
 	static public function sendPushNotificationWithoutNotification($data, $token) {
 	    $url = "https://fcm.googleapis.com/fcm/send";
-	    $serverKey = 'AAAANAqFItM:APA91bHewHKRDRZpIeHnpAKMsoltCSxRuTftYweqzkKyIBkl-XVXHX6DRCSC5ju93JASPLhBHokxONsxTiwTTEM1hTbyCfcXCnhvqtSRET4xJugKvjXcXFphlKEHsUcXX3OkveVu3d9m';
+	    $serverKey = 'AAAAvB1532o:APA91bG6nIch54bG8iwHxWGu0QmNru3piqFqu5n3M_pKXofcuXW2NhMos4a9p8JtO_5WisBJLIYvE5007HoKrs0u-UctvoLkYAppchSUefuVENEl5Vnx6mx70ZQVTJ1MiWWG3EHmH73l';
 	    $arrayToSend = array('to' => $token, 'priority'=>'high', 'data' => $data);
 	    $json = json_encode($arrayToSend);
 	    $headers = array();
