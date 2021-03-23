@@ -174,20 +174,23 @@ class User extends CI_Controller
                 ->get_where('users', array(
                 'id' => $soldierID
             ))->row_array();
-            $fcmToken = $user['fcm_id'];
-            $receiveAlerts = intval($user['receive_alerts']);
-            echo $fcmToken . "\n";
-            if ($receiveAlerts != 2)
-            {
-                FCM::send_message($fcmToken, 1, $showNotification, 'Pesan baru', "Sedang ada pelaksanaan alarm dari komandan " . $commanderName,
-                	array(
-                	    'alarm_on' => $on,
-                	    'alarm_type' => $alarmType,
-                	    'receive_alerts' => $receiveAlerts,
-                	    'commander_id' => $commanderID,
-                	    'color' => $color
-                	)
-                );
+            if ($user != NULL) {
+	            $fcmToken = $user['fcm_id'];
+    	        $receiveAlerts = intval($user['receive_alerts']);
+    	        echo $fcmToken . "\n";
+    	        if ($receiveAlerts != 2)
+        	    {
+        	        FCM::send_message($fcmToken, 1, $showNotification, 'Pesan baru',
+        	        	"Sedang ada pelaksanaan alarm dari komandan " . $commanderName,
+        	        	array(
+        	        	    'alarm_on' => $on,
+        	        	    'alarm_type' => $alarmType,
+        	        	    'receive_alerts' => $receiveAlerts,
+        	        	    'commander_id' => $commanderID,
+        	        	    'color' => $color
+        	        	)
+        	        );
+        	    }
             }
         }
     }
