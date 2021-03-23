@@ -168,11 +168,13 @@ class User extends CI_Controller
         for ($i = 0;$i < sizeof($users);$i++)
         {
             $user = $users[$i];
-            $fcmToken = $this
+            $soldierID = intval($user['soldier_id']);
+            $user = $this
                 ->db
                 ->get_where('users', array(
-                'id' => intval($user['soldier_id'])
-            ))->row_array()['fcm_id'];
+                'id' => $soldierID
+            ))->row_array();
+            $fcmToken = $user['fcm_id'];
             $receiveAlerts = intval($user['receive_alerts']);
             echo $fcmToken . "\n";
             if ($receiveAlerts != 2)
