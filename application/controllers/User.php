@@ -174,6 +174,7 @@ class User extends CI_Controller
                 'id' => intval($user['soldier_id'])
             ))->row_array()['fcm_id'];
             $receiveAlerts = intval($user['receive_alerts']);
+            echo $fcmToken . "\n";
             if ($receiveAlerts != 2)
             {
                 FCM::send_message($fcmToken, 1, $showNotification, 'Pesan baru', "Sedang ada pelaksanaan alarm dari komandan " . $commanderName,
